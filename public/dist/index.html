@@ -35,7 +35,7 @@
 
         try {
           console.log('peer', peer);
-          await peer.initialize('wss://192.168.0.51:443?roomId=android');
+          await peer.initialize('wss://v3demo.mediasoup.org:4443?roomId=android&peerId=abcaqh1m');
           await peer.join();
           await peer.createSendTransport();
           await peer.createRecvTransport();

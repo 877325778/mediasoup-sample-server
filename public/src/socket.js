@@ -45,7 +45,7 @@ module.exports = class Socket extends EventEmitter {
       throw new Error('Invalid state');
     }
 
-    const id = 1234;
+    const id = Math.round(Math.random() * 9999999);
     const { method, ...request } = message;
     const ackPromise = new Promise((resolve, reject) => {
       let handleAckMessageEvent = message => {
@@ -57,7 +57,7 @@ module.exports = class Socket extends EventEmitter {
           console.log('action2', jsonMessage.method);
           console.log('match', jsonMessage.method === method);
 
-          if (jsonMessage.method === method) {
+          if (jsonMessage.response) {
             console.log('resolve');
             this._socket.removeEventListener('message', handleAckMessageEvent);
             return resolve(jsonMessage);

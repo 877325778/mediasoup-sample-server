@@ -168,11 +168,11 @@ module.exports = class Peer extends EventEmitter {
       recvTransport = await this.createRecvTransport(); 
     }
 
-    let remoteMediaStream = this._remoteStreams.get(consumerInfo.producerUserId);
+    let remoteMediaStream = this._remoteStreams.get(consumerInfo.id);
 
     if (!remoteMediaStream) {
       remoteMediaStream = new MediaStream();
-      this._remoteStreams.set(consumerInfo.producerUserId, remoteMediaStream);
+      this._remoteStreams.set(consumerInfo.id, remoteMediaStream);
     }
 
     const kindConsumer = await recvTransport.consume(consumerInfo);
@@ -180,8 +180,8 @@ module.exports = class Peer extends EventEmitter {
 
     remoteMediaStream.addTrack(kindConsumer.track);
 
-    if (!document.getElementById(consumerInfo.producerUserId) && kindConsumer.kind === 'video') {
-      this._createRemoteVideoDiv(consumerInfo.producerUserId, remoteMediaStream);
+    if (!document.getElementById(consumerInfo.id) && kindConsumer.kind === 'video') {
+      this._createRemoteVideoDiv(consumerInfo.id, remoteMediaStream);
     }
 
     // unmute remote consumer
