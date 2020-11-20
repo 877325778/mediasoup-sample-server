@@ -23,7 +23,7 @@ module.exports = class Peer extends EventEmitter {
   async initialize (socketUrl) {
     await this._socket.connect(socketUrl);
     const response = await this._socket.sendWithAck({
-      action: 'getRoomRtpCapabilities',
+      action: 'getRouterRtpCapabilities',
       roomId: 'android'
     });
 
@@ -33,7 +33,7 @@ module.exports = class Peer extends EventEmitter {
 
   async join () {
     const response = await this._socket.sendWithAck({
-      action: 'loginRoom',
+      action: 'join',
       roomId: 'android',
       rtpCapabilities: this._mediasoupDevice.rtpCapabilities
     });
@@ -234,8 +234,8 @@ module.exports = class Peer extends EventEmitter {
           console.log('socket::newuser [id:%s]', message.userId);
           this.emit('newuser', message.userId);
           break;
-        case 'newconsumer':
-          console.log('newconsumer [consumerData:%o]', message.data);
+        case 'newConsumer':
+          console.log('newConsumer [consumerData:%o]', message);
           await this.play(message.data); 
           break;
       }

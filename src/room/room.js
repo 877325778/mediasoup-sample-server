@@ -25,8 +25,8 @@ module.exports.Room = class Room extends EventEmitter {
     this._users = new Map();
   }
 
-  login ({ userId, rtpCapabilities }) {
-    console.log('login() [id:%s, userId:%s]', this._id, userId);
+  join ({ userId, rtpCapabilities }) {
+    console.log('join() [id:%s, userId:%s]', this._id, userId);
     if (this._users.has(userId)) {
       throw new Error(`User with id ${userId} already exists`);
     }
@@ -250,7 +250,7 @@ module.exports.Room = class Room extends EventEmitter {
       this.emit('score', consumerUser.id, score);
     });
 
-    this.emit('newconsumer', {
+    this.emit('newConsumer', {
       consumerUserId: consumerUser.id,
       producerUserId: producerUser.id,
       producerId: producer.id,

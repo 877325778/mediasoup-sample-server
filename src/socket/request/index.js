@@ -1,5 +1,5 @@
-const handleGetRoomRtpCapabilitiesRequest = require('./getRoomRtpCapabilities');
-const handleLoginRoomRequest = require('./loginRoom');
+const handleGetRoomRtpCapabilitiesRequest = require('./getRouterRtpCapabilities');
+const handleLoginRoomRequest = require('./join');
 const handleCreateWebRtcTransportRequest = require('./createWebRtcTransport');
 const handleConnectWebRtcTransportRequest = require('./connectWebRtcTransport');
 const handleProduceRequest = require('./produce');

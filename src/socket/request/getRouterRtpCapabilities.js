@@ -1,14 +1,14 @@
-const Room = require('./../../room');
+const Room = require('../../room');
 
 /**
- * Handles socket getRoomRtpCapabilities request
+ * Handles socket getRouterRtpCapabilities request
  * @method
  * @async
  * @param {Object} data object
  * @param {String} object.roomId - Room ID
  */
 module.exports = async (socket, { roomId }) => {
-  const action = 'getRoomRtpCapabilities';
+  const action = 'getRouterRtpCapabilities';
   let room;
 
   try {
@@ -64,9 +64,9 @@ const setRoomListeners = (socket, room) => {
     });
   });
 
-  room.on('newconsumer', consumerData => {
+  room.on('newConsumer', consumerData => {
     socket.emitToSocket(consumerData.consumerUserId, {
-      action: 'newconsumer',
+      action: 'newConsumer',
       data: consumerData
     });
   });

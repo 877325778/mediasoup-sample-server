@@ -57,11 +57,11 @@ const handleSocketMessage = (socket, json) => {
 
   switch(action) {
       //json.roomId = Room ID
-    case 'getRoomRtpCapabilities':
+    case 'getRouterRtpCapabilities':
       return Request.handleGetRoomRtpCapabilitiesRequest(socket, json);
     // json.roomId = Room ID
     // json.rtpCapabilities = User RTPCapabilities
-    case 'loginRoom':
+    case 'join':
       return Request.handleLoginRoomRequest(socket, { ...json, userId: socket.id });
     // json.roomId = Room ID
     // json.direction = Transport Direction(send/recv)
