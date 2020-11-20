@@ -16,7 +16,7 @@ module.exports = async ({ userId, roomId, direction }) => {
     const room = Room.getRoomById(roomId);
     const webRtcTransportData = await room.createWebRtcTransport({ userId, direction });
     
-    return { action, webRtcTransportData };
+    return { action, data: webRtcTransportData };
   } catch (error) {
     console.error('failed to handle createWebRtcTransport request', error);
     return { action, error: error.message };

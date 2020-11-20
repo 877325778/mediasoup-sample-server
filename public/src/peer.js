@@ -27,8 +27,8 @@ module.exports = class Peer extends EventEmitter {
       roomId: 'android'
     });
 
-    await this._mediasoupDevice.load({ routerRtpCapabilities: response.roomRtpCapabilities });
-    console.log('initialize() complete [routerRtpCapabilities:%o]', response.roomRtpCapabilities);
+    await this._mediasoupDevice.load({ routerRtpCapabilities: response.data });
+    console.log('initialize() complete [routerRtpCapabilities:%o]', response.data);
   }
 
   async join () {
@@ -46,7 +46,7 @@ module.exports = class Peer extends EventEmitter {
     const response = await this._createTransport('send');
     console.log('createSendTransport() [response:%o]', response);
 
-    const sendTransport = await this._mediasoupDevice.createSendTransport(response.webRtcTransportData);
+    const sendTransport = await this._mediasoupDevice.createSendTransport(response.data);
     console.log('createSendTransport() created [id:%s]', sendTransport.id);
 
     this._transports.push(sendTransport);
@@ -82,7 +82,7 @@ module.exports = class Peer extends EventEmitter {
           rtpParameters
         });
 
-        callback({ id: response.producerId });
+        callback(response.data);
         console.log('sendTransport::produce handled');
         this.emit('produce', kind);
       } catch (error) {
@@ -96,7 +96,7 @@ module.exports = class Peer extends EventEmitter {
     const response = await this._createTransport('recv');
     console.log('createRecvTransport() [response:%o]', response);
 
-    const recvTransport = await this._mediasoupDevice.createRecvTransport(response.webRtcTransportData);
+    const recvTransport = await this._mediasoupDevice.createRecvTransport(response.data);
     console.log('createRecvTransport() created [id:%s]', recvTransport.id);
 
     this._transports.push(recvTransport);
@@ -216,6 +216,9 @@ module.exports = class Peer extends EventEmitter {
     return this._socket.sendWithAck({
       action: 'createWebRtcTransport',
       roomId: 'android',
+      producing        : direction === 'send',
+      consuming        : direction !== 'send',
+      sctpCapabilities: this.sctpCapabilities,
       direction 
     });
   }
@@ -232,8 +235,8 @@ module.exports = class Peer extends EventEmitter {
           this.emit('newuser', message.userId);
           break;
         case 'newconsumer':
-          console.log('newconsumer [consumerData:%o]', message.consumerData);
-          await this.play(message.consumerData); 
+          console.log('newconsumer [consumerData:%o]', message.data);
+          await this.play(message.data); 
           break;
       }
     } catch (error) {

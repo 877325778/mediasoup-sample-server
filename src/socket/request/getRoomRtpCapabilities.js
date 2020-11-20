@@ -21,7 +21,7 @@ module.exports = async (socket, { roomId }) => {
     setRoomListeners(socket, room);
   }
     
-  return { action, roomRtpCapabilities: room.routerRtpCapabilities };
+  return { action, data: room.routerRtpCapabilities };
 };
 
 const setRoomListeners = (socket, room) => {
@@ -67,7 +67,7 @@ const setRoomListeners = (socket, room) => {
   room.on('newconsumer', consumerData => {
     socket.emitToSocket(consumerData.consumerUserId, {
       action: 'newconsumer',
-      consumerData
+      data: consumerData
     });
   });
 
