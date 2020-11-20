@@ -35,9 +35,11 @@ function heartbeat () {
   }
 })();
 
-wss.on('connection', socket => {
+wss.on('connection', (socket, req) => {
+ const roomId = new URLSearchParams(req.url.split('?')[1]).get("roomId");
   socket.isAlive = true;
   socket.on('pong', heartbeat);
+ socket.roomId = roomId
 
   // Decorate socket
   socket.broadcast = (message) => {
