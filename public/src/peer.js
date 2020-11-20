@@ -23,8 +23,7 @@ module.exports = class Peer extends EventEmitter {
   async initialize (socketUrl) {
     await this._socket.connect(socketUrl);
     const response = await this._socket.sendWithAck({
-      method: 'getRouterRtpCapabilities',
-      roomId: 'android'
+      method: 'getRouterRtpCapabilities'
     });
 
     await this._mediasoupDevice.load({ routerRtpCapabilities: response.data });
@@ -34,7 +33,6 @@ module.exports = class Peer extends EventEmitter {
   async join () {
     const response = await this._socket.sendWithAck({
       method: 'join',
-      roomId: 'android',
       rtpCapabilities: this._mediasoupDevice.rtpCapabilities
     });
 
@@ -59,7 +57,6 @@ module.exports = class Peer extends EventEmitter {
       try {
         const response = await this._socket.sendWithAck({
           method: 'connectWebRtcTransport',
-          roomId: 'android',
           transportId: sendTransport.id,
           dtlsParameters
         });
@@ -76,7 +73,6 @@ module.exports = class Peer extends EventEmitter {
       try {
         const response = await this._socket.sendWithAck({
           method: 'produce',
-          roomId: 'android',
           transportId: sendTransport.id,
           kind,
           rtpParameters
@@ -109,7 +105,6 @@ module.exports = class Peer extends EventEmitter {
       try {
         const response = await this._socket.sendWithAck({
           method: 'connectWebRtcTransport',
-          roomId: 'android',
           transportId: recvTransport.id,
           dtlsParameters
         });
@@ -189,7 +184,6 @@ module.exports = class Peer extends EventEmitter {
     // unmute remote consumer
     const response = await this._socket.sendWithAck({
       method: 'resumeConsumer',
-      roomId: 'android',
       userId: consumerInfo.consumerUserId,
       consumerId: kindConsumer.id
     });
@@ -215,7 +209,6 @@ module.exports = class Peer extends EventEmitter {
 
     return this._socket.sendWithAck({
       method: 'createWebRtcTransport',
-      roomId: 'android',
       producing        : direction === 'send',
       consuming        : direction !== 'send',
       sctpCapabilities: this.sctpCapabilities,
