@@ -33,6 +33,9 @@ module.exports = class Peer extends EventEmitter {
   async join () {
     const response = await this._socket.sendWithAck({
       method: 'join',
+      displayName : "Web User",
+      device : {flag: "chrome", name: "Chrome", version: "86.0.4240.198"},
+      sctpCapabilities : this.sctpCapabilities,
       rtpCapabilities: this._mediasoupDevice.rtpCapabilities
     });
 
@@ -218,6 +221,10 @@ module.exports = class Peer extends EventEmitter {
 
   get rtpCapabilities () {
     return this._mediasoupDevice.rtpCapabilities;
+  }
+
+  get sctpCapabilities () {
+    return this._mediasoupDevice.sctpCapabilities;
   }
 
   async _handleSocketMessage (message) {

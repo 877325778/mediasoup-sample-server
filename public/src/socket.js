@@ -7,6 +7,8 @@ const CONNECT_TIMEOUT_MS = 3000;
 // Seconds to wait before receiving ack response
 const ACK_TIMEOUT_MS = 3000;
 
+const WS_SUBPROTOCOL = 'protoo'
+
 module.exports = class Socket extends EventEmitter {
   constructor () {
     super();
@@ -43,8 +45,8 @@ module.exports = class Socket extends EventEmitter {
       throw new Error('Invalid state');
     }
 
-    const { method } = message;
-
+    const id = 1234;
+    const { method, ...request } = message;
     const ackPromise = new Promise((resolve, reject) => {
       let handleAckMessageEvent = message => {
         try {
@@ -67,7 +69,7 @@ module.exports = class Socket extends EventEmitter {
 
       handleAckMessageEvent = handleAckMessageEvent.bind(this);
       this._socket.addEventListener('message', handleAckMessageEvent); 
-      this._socket.send(JSON.stringify(message));
+      this._socket.send(JSON.stringify({ ...message, request: true, id: id, data: request }));
     });
 
     return timeoutPromise(ackPromise, ACK_TIMEOUT_MS);
@@ -80,7 +82,7 @@ module.exports = class Socket extends EventEmitter {
   _innerConnect (url) {
     console.log('_innerConnect()');
     const connectPromise = new Promise(resolve => {
-      this._socket = new WebSocket(url);
+      this._socket = new WebSocket(url, WS_SUBPROTOCOL);
 
       const handleSocketOpenEvent = () => {
         console.log('handleSocketOpenEvent');
