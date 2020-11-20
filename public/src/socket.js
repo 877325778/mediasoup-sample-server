@@ -43,7 +43,7 @@ module.exports = class Socket extends EventEmitter {
       throw new Error('Invalid state');
     }
 
-    const { action } = message;
+    const { method } = message;
 
     const ackPromise = new Promise((resolve, reject) => {
       let handleAckMessageEvent = message => {
@@ -51,11 +51,11 @@ module.exports = class Socket extends EventEmitter {
           console.log('got message', message);
           console.log('TEST');
           const jsonMessage = JSON.parse(message.data);
-          console.log('action1', action);
-          console.log('action2', jsonMessage.action);
-          console.log('match', jsonMessage.action === action);
+          console.log('action1', method);
+          console.log('action2', jsonMessage.method);
+          console.log('match', jsonMessage.method === method);
 
-          if (jsonMessage.action === action) {
+          if (jsonMessage.method === method) {
             console.log('resolve');
             this._socket.removeEventListener('message', handleAckMessageEvent);
             return resolve(jsonMessage);

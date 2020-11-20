@@ -8,7 +8,7 @@ const Room = require('../../room');
  * @param {String} object.roomId - Room ID
  */
 module.exports = async (socket, { roomId }) => {
-  const action = 'getRouterRtpCapabilities';
+  const method = 'getRouterRtpCapabilities';
   let room;
 
   try {
@@ -21,20 +21,20 @@ module.exports = async (socket, { roomId }) => {
     setRoomListeners(socket, room);
   }
     
-  return { action, data: room.routerRtpCapabilities };
+  return { method, data: room.routerRtpCapabilities };
 };
 
 const setRoomListeners = (socket, room) => {
   room.on('newuser', userId => {
     socket.broadcast({
-      action: 'newuser',
+      method: 'newuser',
       userId
     });
   });
 
   room.on('consumerclose', (userId, consumerId) => {
     socket.broadcast({
-      action: 'consumerclose',
+      method: 'consumerclose',
       userId,
       consumerId
     });
@@ -42,7 +42,7 @@ const setRoomListeners = (socket, room) => {
 
   room.on('producerpause', (userId, consumerId) => {
     socket.broadcast({
-      action: 'producerpause',
+      method: 'producerpause',
       userId,
       consumerId
     });
@@ -50,7 +50,7 @@ const setRoomListeners = (socket, room) => {
 
   room.on('producerresume', (userId, consumerId) => {
     socket.broadcast({
-      action: 'producerresume',
+      method: 'producerresume',
       userId,
       consumerId
     });
@@ -58,7 +58,7 @@ const setRoomListeners = (socket, room) => {
 
   room.on('score', (userId, consumerId) => {
     socket.broadcast({
-      action: 'score',
+      method: 'score',
       userId,
       consumerId
     });
@@ -66,14 +66,14 @@ const setRoomListeners = (socket, room) => {
 
   room.on('newConsumer', consumerData => {
     socket.emitToSocket(consumerData.consumerUserId, {
-      action: 'newConsumer',
+      method: 'newConsumer',
       data: consumerData
     });
   });
 
   room.on('close', () => {
     socket.broadcast({
-      action: 'close'
+      method: 'close'
     });
   });
 };

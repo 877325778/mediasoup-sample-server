@@ -23,7 +23,7 @@ module.exports = class Peer extends EventEmitter {
   async initialize (socketUrl) {
     await this._socket.connect(socketUrl);
     const response = await this._socket.sendWithAck({
-      action: 'getRouterRtpCapabilities',
+      method: 'getRouterRtpCapabilities',
       roomId: 'android'
     });
 
@@ -33,7 +33,7 @@ module.exports = class Peer extends EventEmitter {
 
   async join () {
     const response = await this._socket.sendWithAck({
-      action: 'join',
+      method: 'join',
       roomId: 'android',
       rtpCapabilities: this._mediasoupDevice.rtpCapabilities
     });
@@ -58,7 +58,7 @@ module.exports = class Peer extends EventEmitter {
     sendTransport.on('connect', async ({ dtlsParameters }, callback, errback) => {
       try {
         const response = await this._socket.sendWithAck({
-          action: 'connectWebRtcTransport',
+          method: 'connectWebRtcTransport',
           roomId: 'android',
           transportId: sendTransport.id,
           dtlsParameters
@@ -75,7 +75,7 @@ module.exports = class Peer extends EventEmitter {
     sendTransport.on('produce', async ({ kind, rtpParameters }, callback, errback) => {
       try {
         const response = await this._socket.sendWithAck({
-          action: 'produce',
+          method: 'produce',
           roomId: 'android',
           transportId: sendTransport.id,
           kind,
@@ -108,7 +108,7 @@ module.exports = class Peer extends EventEmitter {
     recvTransport.on('connect', async ({ dtlsParameters }, callback, errback) => {
       try {
         const response = await this._socket.sendWithAck({
-          action: 'connectWebRtcTransport',
+          method: 'connectWebRtcTransport',
           roomId: 'android',
           transportId: recvTransport.id,
           dtlsParameters
@@ -188,7 +188,7 @@ module.exports = class Peer extends EventEmitter {
 
     // unmute remote consumer
     const response = await this._socket.sendWithAck({
-      action: 'resumeConsumer',
+      method: 'resumeConsumer',
       roomId: 'android',
       userId: consumerInfo.consumerUserId,
       consumerId: kindConsumer.id
@@ -214,7 +214,7 @@ module.exports = class Peer extends EventEmitter {
     }
 
     return this._socket.sendWithAck({
-      action: 'createWebRtcTransport',
+      method: 'createWebRtcTransport',
       roomId: 'android',
       producing        : direction === 'send',
       consuming        : direction !== 'send',
@@ -229,7 +229,7 @@ module.exports = class Peer extends EventEmitter {
 
   async _handleSocketMessage (message) {
     try {
-      switch(message.action) {
+      switch(message.method) {
         case 'newuser':
           console.log('socket::newuser [id:%s]', message.userId);
           this.emit('newuser', message.userId);

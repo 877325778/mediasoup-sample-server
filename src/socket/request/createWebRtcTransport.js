@@ -10,15 +10,15 @@ const Room = require('./../../room');
  * @param {String} object.direction - Direction(send/recv)
  */
 module.exports = async ({ userId, roomId, direction }) => {
-  const action = 'createWebRtcTransport';
+  const method = 'createWebRtcTransport';
 
   try {
     const room = Room.getRoomById(roomId);
     const webRtcTransportData = await room.createWebRtcTransport({ userId, direction });
     
-    return { action, data: webRtcTransportData };
+    return { method, data: webRtcTransportData };
   } catch (error) {
     console.error('failed to handle createWebRtcTransport request', error);
-    return { action, error: error.message };
+    return { method, error: error.message };
   }
 };

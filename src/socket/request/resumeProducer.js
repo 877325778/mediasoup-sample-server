@@ -10,15 +10,15 @@ const Room = require('./../../room');
  * @param {String} object.producerId - Producer ID
  */
 module.exports = async ({ userId, roomId, producerId }) => {
-  const action = 'resumeProducer';
+  const method = 'resumeProducer';
 
   try {
     const room = Room.getRoomById(roomId);
     await room.resumeProducer({ userId, producerId });
 
-    return { action };
+    return { method };
   } catch (error) {
     console.error('failed to handle resumse producer request', error);
-    return { action, error: error.message };
+    return { method, error: error.message };
   }
 };

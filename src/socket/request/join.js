@@ -9,7 +9,7 @@ const Room = require('./../../room');
  * @param {Object} object.rtpCapabilities - User's RTPCapabilities object
  */
 module.exports = (socket, { userId, roomId, rtpCapabilities }) => {
-  const action = 'join';
+  const method = 'join';
  
   try {
     const room = Room.getRoomById(roomId);
@@ -17,9 +17,9 @@ module.exports = (socket, { userId, roomId, rtpCapabilities }) => {
     socket.room = room;
     room.join({ userId, rtpCapabilities });
 
-    return { action };
+    return { method };
   } catch (error) {
     console.error('failed to handle join room request', error);
-    return { action, error: error.message };
+    return { method, error: error.message };
   }
 };

@@ -12,15 +12,15 @@ const Room = require('./../../room');
  * @param {Object} object.rtpParameters - Producer RTPParameters
  */
 module.exports = async ({ roomId, userId, transportId, kind, rtpParameters }) => {
-  const action = 'produce';
+  const method = 'produce';
 
   try {
     const room = Room.getRoomById(roomId);
     const { id } = await room.createProducer({ userId, transportId, kind, rtpParameters });
 
-    return { action, data: id }; 
+    return { method, data: id }; 
   } catch (error) {
     console.error('failed to handle produce request', error);
-    return { action, error: error.message };
+    return { method, error: error.message };
   }
 };

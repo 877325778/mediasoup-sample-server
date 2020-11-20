@@ -10,15 +10,15 @@ const Room = require('./../../room');
  * @param {String} object.consumerId - Consumer ID
  */
 module.exports = async ({ userId, roomId, consumerId }) => {
-  const action = 'pauseConsumer';
+  const method = 'pauseConsumer';
 
   try {
     const room = Room.getRoomById(roomId);
     await room.pauseConsumer({ userId, consumerId });
 
-    return { action };
+    return { method };
   } catch (error) {
     console.error('failed to handle pause consumer request', error);
-    return { action, error: error.message };
+    return { method, error: error.message };
   }
 }; 

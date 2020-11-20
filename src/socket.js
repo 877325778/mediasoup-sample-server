@@ -53,9 +53,9 @@ const setSocketListeners = socket => {
 };
 
 const handleSocketMessage = (socket, json) => {
-  const { action } = json;
+  const { method } = json;
 
-  switch(action) {
+  switch(method) {
       //json.roomId = Room ID
     case 'getRouterRtpCapabilities':
       return Request.handleGetRoomRtpCapabilitiesRequest(socket, json);
@@ -96,7 +96,7 @@ const handleSocketMessage = (socket, json) => {
     case 'getConsumerStats':
       break;
     case 'rtcStats':
-      return Request.handleRemoteRtcStatsReport({ ...json, userId: socket.id });
-    default: throw new Error(`Unknown action ${action}`);  
+      return Request.handleRemoteRtcStatsReport({ ...json, userId: socket.id, roomId });
+    default: throw new Error(`Unknown method ${method}`);  
   }
 };
