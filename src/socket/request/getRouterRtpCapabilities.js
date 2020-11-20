@@ -7,7 +7,8 @@ const Room = require('../../room');
  * @param {Object} data object
  * @param {String} object.roomId - Room ID
  */
-module.exports = async (socket, { roomId }) => {
+module.exports = async (socket) => {
+  const { roomId } = socket;
   const method = 'getRouterRtpCapabilities';
   let room;
 

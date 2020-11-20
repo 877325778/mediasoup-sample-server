@@ -54,7 +54,7 @@ const setSocketListeners = socket => {
 
 const handleSocketMessage = (socket, json) => {
   const { method } = json;
-
+  const { roomId } = socket;
   switch(method) {
       //json.roomId = Room ID
     case 'getRouterRtpCapabilities':
@@ -62,32 +62,32 @@ const handleSocketMessage = (socket, json) => {
     // json.roomId = Room ID
     // json.rtpCapabilities = User RTPCapabilities
     case 'join':
-      return Request.handleLoginRoomRequest(socket, { ...json, userId: socket.id });
+      return Request.handleLoginRoomRequest(socket, { ...json, userId: socket.id, roomId });
     // json.roomId = Room ID
     // json.direction = Transport Direction(send/recv)
     case 'createWebRtcTransport':
-      return Request.handleCreateWebRtcTransportRequest({ ...json, userId: socket.id });
+      return Request.handleCreateWebRtcTransportRequest({ ...json, userId: socket.id, roomId });
       // json.roomId = Room Id
       // json.transportId = Transport Id
       // json.dtlsParameters
     case 'connectWebRtcTransport':
-      return Request.handleConnectWebRtcTransportRequest({ ...json, userId: socket.id });
+      return Request.handleConnectWebRtcTransportRequest({ ...json, userId: socket.id, roomId });
     case 'produce':
       // json.roomId = Room Id
       // json.transportId = Transport Id
       // json.kind = Produce Kind
       // json.rtpParameters RTPParameters
-      return Request.handleProduceRequest({ ...json, userId: socket.id });
+      return Request.handleProduceRequest({ ...json, userId: socket.id, roomId });
     case 'closeProducer':
       break;
     case 'pauseProducer':
-      return Request.handlePauseProducerRequest({ ...json, userId: socket.id });
+      return Request.handlePauseProducerRequest({ ...json, userId: socket.id, roomId });
     case 'resumeProducer':
-      return Request.handleResumeProducerRequest({ ...json, userId: socket.id });
+      return Request.handleResumeProducerRequest({ ...json, userId: socket.id, roomId });
     case 'pauseConsumer':
-      return Request.handlePauseConsumerRequest({ ...json, userId: socket.id });
+      return Request.handlePauseConsumerRequest({ ...json, userId: socket.id, roomId });
     case 'resumeConsumer':
-      return Request.handleResumeConsumerRequest({ ...json, userId: socket.id });
+      return Request.handleResumeConsumerRequest({ ...json, userId: socket.id, roomId });
       break;
     case 'getTransportStats':
       break;
